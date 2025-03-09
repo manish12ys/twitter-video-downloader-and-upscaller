@@ -68,14 +68,15 @@ def upscale_to_hd(input_file):
         return None
 
 st.title("📹 Twitter HD Video Downloader & Upscaler")
-st.write("Paste a Twitter video link below to choose a resolution and upscale it to HD.")
+st.write("Paste a Twitter video link below, click 'Enter', choose a resolution, and upscale it to HD if needed.")
 
 tweet_url = st.text_input("Enter Twitter video URL:")
+enter_pressed = st.button("Enter")  # Add enter button
 
 def is_valid_twitter_url(url):
     return re.match(r"https?://(www\.)?(twitter|x)\.com/.+/status/\d+", url)
 
-if tweet_url and is_valid_twitter_url(tweet_url):
+if enter_pressed and tweet_url and is_valid_twitter_url(tweet_url):
     formats = get_available_formats(tweet_url)
 
     if formats:
