@@ -70,14 +70,19 @@ def upscale_to_hd(input_file):
 st.title("📹 Twitter HD Video Downloader & Upscaler")
 st.write("Paste a Twitter video link below, click 'Enter', choose a resolution, and upscale it to HD if needed.")
 
-tweet_url = st.text_input("Enter Twitter video URL:")
-enter_pressed = st.button("Enter")  # Add enter button
+# Store URL in session state to persist across reruns
+if "tweet_url" not in st.session_state:
+    st.session_state.tweet_url = ""
+
+tweet_url = st.text_input("Enter Twitter video URL:", value=st.session_state.tweet_url)
+if st.button("Enter"):
+    st.session_state.tweet_url = tweet_url  # Save input in session state
 
 def is_valid_twitter_url(url):
     return re.match(r"https?://(www\.)?(twitter|x)\.com/.+/status/\d+", url)
 
-if enter_pressed and tweet_url and is_valid_twitter_url(tweet_url):
-    formats = get_available_formats(tweet_url)
+if st.session_state.tweet_url and is_valid_twitter_url(st.session_state.tweet_url):
+    formats = get_available_formats(st.session_state.tweet_url)
 
     if formats:
         format_options = [f[0] for f in formats]
@@ -90,7 +95,7 @@ if enter_pressed and tweet_url and is_valid_twitter_url(tweet_url):
             if not ffmpeg_installed:
                 st.error("FFmpeg is not installed! Please install it and restart the app.")
             else:
-                video_file = download_twitter_video(tweet_url, format_id)
+                video_file = download_twitter_video(st.session_state.tweet_url, format_id)
                 if video_file:
                     if upscale_option:
                         st.info("Enhancing video to 1080p HD, please wait...")
