@@ -35,4 +35,4 @@ Made with ❤️ using Streamlit
 
 ---
 
-Let me know if you want this styled with a dark theme preview or included as a GitHub page.
+
